@@ -61,6 +61,7 @@ export default class Quiz extends Component {
         errors: {}
      
     }
+ 
 
 
     showModal = e => {
@@ -157,9 +158,12 @@ export default class Quiz extends Component {
             alert('The max number value 3 , the minimum value 1');
         }
     }
+   
 
     onDelete(e){
-        if(this.state.questinscount>=this.DeletNumber.value){
+        
+       
+        if(this.state.questinscount>=this.DeletNumber.value && this.DeletNumber.value != ''){
         e.preventDefault();
         var DeletNumber = this.DeletNumber.value;
        var DeleteQuestion = this.state.quiestions[DeletNumber];
@@ -179,16 +183,15 @@ export default class Quiz extends Component {
         this.state.answers[DeletNumber][3]='';
         this.hideModal2();
         alert("Question Deleted ! ")
+       this.state.questinscount--;
       
         }
         else{
             alert('Your number is too big! The maximum questions number :' + this.state.questinscount);
         }
 
-  
     }
-  
-    
+ 
     
 
     render(){
@@ -246,8 +249,7 @@ export default class Quiz extends Component {
                             <Modal.Body> 
                                 <Form className="form-horizontal"  >
                                 <input type="text" className="form-control" ref={(c) => this.DeletNumber = c} name="DeletNumber" placeholder='The number of the question to delete ' />     <br/>         
-                      
-                       
+                              
                         </Form>
                         </Modal.Body>
                             <Modal.Footer>
@@ -289,3 +291,4 @@ export default class Quiz extends Component {
  
          }
 }
+
