@@ -13,6 +13,8 @@ export default class Quiz extends Component {
     constructor(props){
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+      
       }
     
 
@@ -54,6 +56,7 @@ export default class Quiz extends Component {
         score: 0,
         questinscount :3,
         show:false,
+        show2:false,
         fields: {},
         errors: {}
      
@@ -68,6 +71,17 @@ export default class Quiz extends Component {
       hideModal = e => {
         this.setState({
           show: false
+        });
+      };
+
+      showModal2 = e => {
+        this.setState({
+          show2: true
+        });
+      };
+      hideModal2 = e => {
+        this.setState({
+          show2: false
         });
       };
     
@@ -108,6 +122,7 @@ export default class Quiz extends Component {
         var answear2Value = this.answear2Value;
         var answear3Value = this.answear3Value;
         var correctAnswearValue = this.correctAnswearValue;
+        if(this.correctAnswearValue <= 3 && this.correctAnswearValue >= 1){
         this.state.questinscount+=1;
         this.setState({
             quiestions: {
@@ -133,18 +148,54 @@ export default class Quiz extends Component {
                [this.state.questinscount]: correctAnswearValue.value
             }
           });
-          console.log('Az answear hossza : ' + this.state.answers.length);
+          console.log('Answear lenght: ' + this.state.answers.length);
           console.log(this.state.quiestions)
           this.hideModal();
           alert("Question Added ! ")
+        }
+        else{
+            alert('The max number value 3 , the minimum value 1');
+        }
     }
 
+    onDelete(e){
+        if(this.state.questinscount>=this.DeletNumber.value){
+        e.preventDefault();
+        var DeletNumber = this.DeletNumber.value;
+       var DeleteQuestion = this.state.quiestions[DeletNumber];
+       var DeleteCorrectAnswear = this.state.correctAnswers[DeletNumber];
+       var answears = this.state.answers[DeletNumber];
+        console.log('The question  :' + DeleteQuestion);
+        console.log('The CorrectAnswear  :' + DeleteCorrectAnswear);
+        console.log('The first answear  :' + answears[1]);
+        console.log('The Second answear  :' + answears[2]);
+        console.log('The Thirt answear  :' + answears[3]); 
+
+
+        this.state.quiestions[DeletNumber]= '';
+        this.state.correctAnswers[DeletNumber] = '';
+        this.state.answers[DeletNumber][1] = '';
+        this.state.answers[DeletNumber][2]='';
+        this.state.answers[DeletNumber][3]='';
+        this.hideModal2();
+        alert("Question Deleted ! ")
+      
+        }
+        else{
+            alert('Your number is too big! The maximum questions number :' + this.state.questinscount);
+        }
+
+  
+    }
+  
+    
     
 
     render(){
         let { quiestions, answers, correctAnswer, clickedAnswer, step, score } = this.state;
         return( 
             <div className="Content">
+                <h3 class="text-success">Your score : {this.state.score} / {this.state.questinscount}</h3>
                 {step <= Object.keys(quiestions).length ? 
                     (<>
                         <Question
@@ -157,7 +208,9 @@ export default class Quiz extends Component {
                             correctAnswer={correctAnswer}
                             clickedAnswer={clickedAnswer}
                         />
-                           <h5>Click the correct answear, or if you want to add a question, press the button.  </h5>
+                        <br/>
+                        <br/>
+                           <h5>If you want to manage the panel, you can add and delete it.</h5>
                         <button type="button" onClick={this.showModal} className="btn btn-primary">Add Question</button>
                     
 
@@ -183,6 +236,32 @@ export default class Quiz extends Component {
                             </Button>
                             </Modal.Footer>
                      </Modal>
+
+
+                     <button className="btn btn-danger" onClick={this.showModal2} >Delete</button>
+                     <Modal show={this.state.show2} >
+                            <Modal.Header closeButton onClick={this.hideModal2}>
+                            <Modal.Title>Delete a question for the quizz !</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body> 
+                                <Form className="form-horizontal"  >
+                                <input type="text" className="form-control" ref={(c) => this.DeletNumber = c} name="DeletNumber" placeholder='The number of the question to delete ' />     <br/>         
+                      
+                       
+                        </Form>
+                        </Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={this.hideModal2} >
+                                Close
+                            </Button>
+                            <Button variant="success" onClick={this.onDelete} >Delete</Button>
+                            </Modal.Footer>
+                     </Modal>
+
+                 
+
+
+
 
                         <button
                         className="NextStep"
