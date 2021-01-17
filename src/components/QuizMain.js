@@ -61,7 +61,6 @@ export default class Quiz extends Component {
         errors: {}
      
     }
- 
 
 
     showModal = e => {
@@ -123,7 +122,7 @@ export default class Quiz extends Component {
         var answear2Value = this.answear2Value;
         var answear3Value = this.answear3Value;
         var correctAnswearValue = this.correctAnswearValue;
-        if(this.correctAnswearValue <= 3 && this.correctAnswearValue >= 1){
+        if(this.correctAnswearValue.value <= 3 && this.correctAnswearValue.value >= 1){
         this.state.questinscount+=1;
         this.setState({
             quiestions: {
@@ -156,9 +155,9 @@ export default class Quiz extends Component {
         }
         else{
             alert('The max number value 3 , the minimum value 1');
+      
         }
     }
-   
 
     onDelete(e){
         
@@ -249,7 +248,7 @@ export default class Quiz extends Component {
                             <Modal.Body> 
                                 <Form className="form-horizontal"  >
                                 <input type="text" className="form-control" ref={(c) => this.DeletNumber = c} name="DeletNumber" placeholder='The number of the question to delete ' />     <br/>         
-                              
+                            
                         </Form>
                         </Modal.Body>
                             <Modal.Footer>
